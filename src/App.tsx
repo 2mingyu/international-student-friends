@@ -1,5 +1,11 @@
+import AppRouter from "./pages/AppRouter";
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <AppRouter />
+    </>
+  );
 }
 
 export default App;

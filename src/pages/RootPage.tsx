@@ -10,12 +10,12 @@ export default function RootPage() {
   const closeSidebar = () => setIsSidebarOpen(false);
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header openSidebar={openSidebar} />
       <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
-      <main>
+      <main className="flex flex-grow flex-col overflow-y-auto">
         <Outlet />
       </main>
-    </>
+    </div>
   );
 }

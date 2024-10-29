@@ -1,16 +1,18 @@
 import { useState } from "react";
 import useUserStore from "@store/useUserStore";
-import { put_users } from "@services/user";
-import InterestSelectionSheet from "@components/InterestSelectionSheet"; // 관심사 선택 시트 가져오기
+import { get_users, put_users } from "@services/user";
+import InterestSelectionSheet from "@components/InterestSelectionSheet";
+import { countries, /*languages,*/ majors } from "@data/datas";
+import { User } from "types/users";
 
 export default function MyPageMyInfo() {
-  const { user } = useUserStore();
+  const { setUser, user } = useUserStore();
   const [isEditing, setIsEditing] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [editedUser, setEditedUser] = useState({
     name: "",
     country: "",
-    preferredLanguage: "",
+    language: "",
     major: "",
   });
 
@@ -18,7 +20,7 @@ export default function MyPageMyInfo() {
     setEditedUser({
       name: user.name,
       country: user.country,
-      preferredLanguage: "", // user.preferredLanguage,
+      language: "", // TODO: user.language,
       major: user.major,
     });
     setIsEditing(true);
@@ -34,12 +36,13 @@ export default function MyPageMyInfo() {
         user.userId,
         editedUser.name,
         editedUser.country,
-        user.profileImage, // 프로필 이미지 수정은 아직 구현하지 않음
-        editedUser.preferredLanguage,
+        user.profileImage, // TODO X: 프로필 이미지 수정
+        editedUser.language,
         editedUser.major,
       );
+      const userProfile: User = await get_users(user.userId);
+      setUser(userProfile);
       setIsEditing(false);
-      // TODO: 저장 성공 시 사용자 정보 업데이트
     } catch (error) {
       console.error("Failed to update user info", error);
     }
@@ -88,36 +91,43 @@ export default function MyPageMyInfo() {
       <div className="flex gap-2">
         <h1 className="min-w-20 font-semibold text-gray-500">Country</h1>
         {isEditing ? (
-          <input
-            type="text"
+          <select
             value={editedUser.country}
             onChange={(e) =>
               setEditedUser({ ...editedUser, country: e.target.value })
             }
             className="max-w-32 border-b-2 border-gray-300 px-0.5 py-1 text-sm focus:border-blue-500 focus:outline-none"
-          />
+          >
+            {countries.map((country, index) => (
+              <option key={index} value={country.en}>
+                {country.en}
+              </option>
+            ))}
+          </select>
         ) : (
           <p className="font-semibold">{user.country}</p>
         )}
       </div>
 
-      {/* Preferred Language */}
+      {/* TODO: Language */}
       {/* <div className="flex gap-2">
         <h1 className="min-w-20 font-semibold text-gray-500">Language</h1>
         {isEditing ? (
-          <input
-            type="text"
-            value={editedUser.preferredLanguage}
+          <select
+            value={editedUser.language}
             onChange={(e) =>
-              setEditedUser({
-                ...editedUser,
-                preferredLanguage: e.target.value,
-              })
+              setEditedUser({ ...editedUser, language: e.target.value })
             }
-            className="border-b-2 border-gray-300 px-0.5 py-1 focus:outline-none focus:border-blue-500 text-sm"
-          />
+            className="max-w-32 border-b-2 border-gray-300 px-0.5 py-1 text-sm focus:border-blue-500 focus:outline-none"
+          >
+            {languages.map((language, index) => (
+              <option key={index} value={language.en}>
+                {language.en}
+              </option>
+            ))}
+          </select>
         ) : (
-          <p className="font-semibold">{user.preferredLanguage}</p>
+          <p className="font-semibold">{user.language}</p>
         )}
       </div> */}
 
@@ -125,14 +135,19 @@ export default function MyPageMyInfo() {
       <div className="flex gap-2">
         <h1 className="min-w-20 font-semibold text-gray-500">Major</h1>
         {isEditing ? (
-          <input
-            type="text"
+          <select
             value={editedUser.major}
             onChange={(e) =>
               setEditedUser({ ...editedUser, major: e.target.value })
             }
             className="max-w-32 border-b-2 border-gray-300 px-0.5 py-1 text-sm focus:border-blue-500 focus:outline-none"
-          />
+          >
+            {majors.map((major, index) => (
+              <option key={index} value={major.en}>
+                {major.en}
+              </option>
+            ))}
+          </select>
         ) : (
           <p className="font-semibold">{user.major}</p>
         )}

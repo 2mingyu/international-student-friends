@@ -1,14 +1,9 @@
-import { dummyUserProfile } from "./dummy";
 import axiosInstance from "@services/axiosInstance";
 import { User } from "types/users";
 
 // 사용자 정보 조회
 export const get_users = async (id: number) => {
-  // 여기부터 더미
-  return dummyUserProfile;
-  // 여기까지 더미
   const response = await axiosInstance.get<User>(`/api/v1/users/${id}`);
-
   return response.data;
 };
 

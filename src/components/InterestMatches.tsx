@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { get_matches } from "@services/matching";
 import { User } from "types/users";
-import interestTitles from "@data/interestTitles";
+import { interests } from "@data/datas";
 
 interface InterestMatchesProps {
   interest: string;
+  // TODO: language: string;
   isFirst: boolean;
 }
 
 export default function InterestMatches({
   interest,
   isFirst,
+  // TODO: language
 }: InterestMatchesProps) {
   const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -31,11 +33,17 @@ export default function InterestMatches({
     fetchMatches();
   }, [interest]);
 
+  // TODO: 언어에 따른 제목 설정
+  let interestTitle = interests[interest]?.ko || interest;
+  // if (language === 'English') interestTitle = interests[interest]?.en || interest;
+  // else if (language === 'French') interestTitle = interests[interest]?.fr || interest;
+  // else if (language === 'Japanese') interestTitle = interests[interest]?.ja || interest;
+  // else if (language === 'German') interestTitle = interests[interest]?.de || interest;
+  // else if (language === 'Chinese') interestTitle = interests[interest]?.zh || interest;
+
   return (
     <div className="mb-4">
-      <h2 className="mb-4 text-xl font-bold">
-        {interestTitles[interest] || interest}
-      </h2>
+      <h2 className="mb-4 text-xl font-bold">{interestTitle}</h2>
       {error ? (
         <p>{error}</p>
       ) : matchedUsers.length > 0 ? (

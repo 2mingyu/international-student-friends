@@ -6,9 +6,11 @@ export interface User {
   major: string;
   interests: Interest[];
   feeds?: Feed[];
+  // language: string;
 }
 
 export interface Interest {
+  id: number;
   content: string;
   score: number;
 }

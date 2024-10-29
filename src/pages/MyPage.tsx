@@ -23,7 +23,7 @@ export default function MyPage() {
       case "내 정보":
         return <MyPageMyInfo />;
       default:
-        return <div>미구현</div>; // TODO: 미구현 상태
+        return <div>미구현</div>; // TODO X: 미구현 상태
     }
   };
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Sheet } from "react-modal-sheet";
-import interestTitles from "@data/interestTitles";
+import { interests } from "@data/datas";
 import useUserStore from "@store/useUserStore";
 
 interface InterestSelectionSheetProps {
@@ -12,7 +12,7 @@ export default function InterestSelectionSheet({
   isOpen,
   onClose,
 }: InterestSelectionSheetProps) {
-  const { user } = useUserStore(); // 현재 유저 정보 가져오기
+  const { user } = useUserStore();
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
   // 시트가 열릴 때 user의 관심사에 따라 체크박스를 설정
@@ -22,8 +22,8 @@ export default function InterestSelectionSheet({
     }
   }, [isOpen, user.interests]);
 
+  // 선택/해제 로직
   const handleInterestChange = (interest: string) => {
-    // 선택/해제 로직
     setSelectedInterests((prevSelected) =>
       prevSelected.includes(interest)
         ? prevSelected.filter((item) => item !== interest)
@@ -36,28 +36,30 @@ export default function InterestSelectionSheet({
       <Sheet.Container>
         <Sheet.Header />
         <Sheet.Content>
-          <div className="p-4">
-            <h2 className="mb-4 text-lg font-semibold">
-              관심사를 골라주세요 (두 가지 이상)
+          <div className="flex h-full flex-col p-4">
+            <h2 className="mb-8 text-center text-xl font-semibold">
+              Select your interests
             </h2>
-            <div className="grid grid-cols-2 gap-2">
-              {Object.keys(interestTitles).map((interestKey, index) => (
-                <label key={index} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox"
-                    checked={selectedInterests.includes(interestKey)} // 선택된 항목 체크
-                    onChange={() => handleInterestChange(interestKey)} // 선택 로직
-                  />
-                  {interestTitles[interestKey]} {/* 타이틀 표시 */}
-                </label>
+            <div className="grid grid-cols-2 gap-4">
+              {Object.keys(interests).map((interestKey, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleInterestChange(interestKey)}
+                  className={`flex h-16 w-full cursor-pointer items-center justify-center rounded-lg border-2 p-3 text-center ${
+                    selectedInterests.includes(interestKey)
+                      ? "border-blue-500 text-blue-500"
+                      : "border-gray-300 text-gray-700"
+                  }`}
+                >
+                  {`${interestKey} ${interests[interestKey].emoji}`}
+                </div>
               ))}
             </div>
             <button
-              onClick={onClose}
-              className="mt-4 w-full rounded bg-blue-500 px-4 py-2 text-white"
+              onClick={onClose} // TODO: 관심사 변경
+              className="mt-auto w-full rounded bg-blue-500 px-4 py-2 text-white"
             >
-              저장 후 닫기
+              Save and Close
             </button>
           </div>
         </Sheet.Content>

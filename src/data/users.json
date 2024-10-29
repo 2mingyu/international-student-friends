@@ -1,0 +1,68 @@
+[
+  {
+    "userId": 8,
+    "email": "korea@inu.ac.kr",
+    "password": "string",
+    "name": "박철길",
+    "profileImage": "string",
+    "introduction": "안녕하세요, 반갑습니다.",
+    "country": "REPUBLIC OF KOREA",
+    "language": "Korean",
+    "major": "Information Technology"
+  },
+  {
+    "userId": 9,
+    "email": "usa@inu.ac.kr",
+    "password": "string",
+    "name": "John Doe",
+    "profileImage": "string",
+    "introduction": "Hello, nice to meet you.",
+    "country": "UNITED STATES",
+    "language": "English",
+    "major": "Convergence and Liberal Studies"
+  },
+  {
+    "userId": 10,
+    "email": "japan@inu.ac.kr",
+    "password": "string",
+    "name": "田中 聡",
+    "profileImage": "string",
+    "introduction": "こんにちは、よろしくお願いします。",
+    "country": "JAPAN",
+    "language": "Japanese",
+    "major": "Life Science and Technology"
+  },
+  {
+    "userId": 11,
+    "email": "germany@inu.ac.kr",
+    "password": "string",
+    "name": "Hans Müller",
+    "profileImage": "string",
+    "introduction": "Hallo, schön dich zu treffen.",
+    "country": "GERMANY",
+    "language": "German",
+    "major": "Northeast Asia International Commerce and Logistics"
+  },
+  {
+    "userId": 12,
+    "email": "china@inu.ac.kr",
+    "password": "string",
+    "name": "李伟",
+    "profileImage": "string",
+    "introduction": "你好，很高兴见到你。",
+    "country": "CHINA",
+    "language": "Chinese",
+    "major": "Social Sciences"
+  },
+  {
+    "userId": 13,
+    "email": "france@inu.ac.kr",
+    "password": "string",
+    "name": "Pierre Dubois",
+    "profileImage": "string",
+    "introduction": "Bonjour, enchanté de vous rencontrer.",
+    "country": "FRANCE",
+    "language": "French",
+    "major": "Law"
+  }
+]

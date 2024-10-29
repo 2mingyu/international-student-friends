@@ -10,6 +10,7 @@ export default function HomePage() {
         <InterestMatches
           key={interest.content}
           interest={interest.content}
+          // TODO: language={user.language}
           isFirst={index === 0}
         />
       ))}

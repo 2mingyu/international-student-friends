@@ -1,3 +1,5 @@
+import useUserStore from "@store/useUserStore";
+import { useNavigate } from "react-router-dom";
 interface MyPageCategoriesProps {
   categories: { [key: string]: string[] };
   selectedCategory: string;
@@ -9,6 +11,23 @@ export default function MyPageCategories({
   selectedCategory,
   onSelectCategory,
 }: MyPageCategoriesProps) {
+  const { setToken, setUser, setUserId } = useUserStore();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setToken("");
+    setUser({
+      userId: 0,
+      name: "",
+      profileImage: "",
+      country: "",
+      major: "",
+      interests: [],
+    });
+    setUserId(0);
+    navigate("/login");
+  };
+
   return (
     <div className="w-1/3 border-r p-3">
       {Object.entries(categories).map(([category, subcategories]) => (
@@ -27,6 +46,12 @@ export default function MyPageCategories({
           </ul>
         </div>
       ))}
+      <button
+        onClick={handleLogout}
+        className="w-full text-left text-red-500 hover:text-red-600"
+      >
+        Logout
+      </button>
     </div>
   );
 }

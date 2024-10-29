@@ -156,15 +156,15 @@ export default function MyPageMyInfo() {
       {/* Interests */}
       <div className="flex gap-2">
         <h1 className="min-w-20 font-semibold text-gray-500">Interests</h1>
+
         <div>
+          {isEditing && (
+            <p className="cursor-pointer underline" onClick={openSheet}>
+              edit{" "}
+            </p>
+          )}
           {user.interests.map((interest, index) => (
-            <p
-              key={index}
-              className={`font-semibold ${
-                isEditing ? "cursor-pointer underline" : ""
-              }`}
-              onClick={isEditing ? openSheet : undefined}
-            >
+            <p key={index} className="font-semibold">
               {interest.content}
             </p>
           ))}

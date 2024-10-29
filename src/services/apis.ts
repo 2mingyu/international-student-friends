@@ -31,14 +31,31 @@ export const get_matches = async (
   return resposne.data;
 };
 
-// 프로필 조회
-export const get_users_profile = async (userId: number) => {
+// 사용자 정보 조회
+export const get_users = async (id: number) => {
   // 여기부터 더미
   return dummyUserProfile;
   // 여기까지 더미
-  const response = await axiosInstance.get<User>(
-    `/api/v1/users/${userId}/profile`,
-  );
+  const response = await axiosInstance.get<User>(`/api/v1/users/${id}`);
 
+  return response.data;
+};
+
+// 사용자 정보 수정
+export const put_users = async (
+  id: number,
+  name: string,
+  country: string,
+  profileImage: string,
+  preferredLanguage: string,
+  major: string,
+) => {
+  const response = await axiosInstance.put(`/api/v1/users/${id}`, {
+    name: name,
+    country: country,
+    profileImage: profileImage,
+    preferredLanguage: preferredLanguage,
+    major: major,
+  });
   return response.data;
 };

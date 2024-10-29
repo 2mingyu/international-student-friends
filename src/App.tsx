@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import AppRouter from "./pages/AppRouter";
 import useUserStore from "@store/useUserStore";
-import { get_users_profile } from "@services/apis";
+import { get_users } from "@services/apis";
 
 function App() {
   const { setUser } = useUserStore();
@@ -9,8 +9,8 @@ function App() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const userId = 1; // TODO: 임시 본인 userId 사용 중
-        const userProfile = await get_users_profile(userId);
+        const id = 1; // TODO: 임시 본인 userId 사용 중
+        const userProfile = await get_users(id);
         setUser(userProfile);
       } catch (error) {
         console.error("Failed to fetch user profile", error);

@@ -14,6 +14,10 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    // 폼이 비어있으면 alert 발생
+    if (!email || !password) {
+      return alert("Please fill in both email and password.");
+    }
     try {
       const response: LoginResponse = await login(email, password);
       setToken(response.token);
@@ -32,40 +36,62 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center">
-      <h2 className="mb-4 text-2xl font-bold">Login</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="mb-2 rounded border p-2"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="mb-4 rounded border p-2"
-      />
-      <button
-        onClick={handleLogin}
-        className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
-      >
-        Login
-      </button>
+    <div className="flex h-screen flex-col items-center justify-center bg-gray-100 p-4">
+      <div className="w-full max-w-sm space-y-6 rounded-lg bg-white p-8 shadow-lg">
+        <h2 className="text-center text-3xl font-bold text-gray-800">Login</h2>
 
-      <h3 className="mb-2 text-lg font-semibold">Quick Login</h3>
-      <div className="space-y-2">
-        {usersData.map((user, index) => (
-          <button
-            key={index}
-            onClick={() => quickLogin(user.email, user.password)}
-            className="w-full rounded bg-gray-500 px-4 py-2 text-white"
-          >
-            Login as {user.email}
-          </button>
-        ))}
+        <div className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full rounded-md border border-gray-300 bg-gray-200 p-3 text-sm focus:border-gray-500 focus:bg-white focus:outline-none"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full rounded-md border border-gray-300 bg-gray-200 p-3 text-sm focus:border-gray-500 focus:bg-white focus:outline-none"
+          />
+        </div>
+
+        <button
+          onClick={handleLogin}
+          className="w-full rounded-md bg-gray-700 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
+        >
+          Log In
+        </button>
+
+        <div className="relative flex items-center justify-center">
+          <div className="absolute w-full border-t border-gray-300"></div>
+          <span className="relative z-10 bg-white px-4 text-sm text-gray-500">
+            OR
+          </span>
+        </div>
+
+        <button
+          onClick={() => console.log("Navigate to register page")}
+          className="w-full rounded-md bg-gray-500 py-3 text-sm font-bold text-white transition hover:bg-gray-600"
+        >
+          Register
+        </button>
+
+        <h3 className="text-center text-sm font-semibold text-gray-700">
+          Quick Login
+        </h3>
+        <div className="space-y-2">
+          {usersData.map((user, index) => (
+            <button
+              key={index}
+              onClick={() => quickLogin(user.email, user.password)}
+              className="w-full rounded-md bg-gray-300 py-3 text-sm font-semibold text-gray-800 transition hover:bg-gray-400"
+            >
+              {user.email}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

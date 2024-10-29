@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Close from "@assets/close.svg";
 import { routesData } from "@data/routes";
+// import useUserStore from "@store/useUserStore";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const navigate = useNavigate();
+  // const { user } = useUserStore();
 
   useEffect(() => {
     // 사이드바가 열리면 body 스크롤을 막음
@@ -49,7 +51,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   onClose();
                 }}
               >
-                {route.name}
+                {/* TODO: 언어 다국어 */}
+                {/* {route.name[user.language]} */}
+                {route.name.ko} {/* 제거 */}
               </li>
             ))}
           </ul>

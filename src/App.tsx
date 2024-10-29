@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import AppRouter from "./pages/AppRouter";
 import useUserStore from "@store/useUserStore";
-import { get_users } from "@services/apis";
+import { get_users } from "@services/user";
 
 function App() {
   const { setUser } = useUserStore();

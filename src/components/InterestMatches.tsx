@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { get_matches } from "@services/apis";
+import { get_matches } from "@services/matching";
 import { User } from "types/users";
 import interestTitles from "@data/interestTitles";
 

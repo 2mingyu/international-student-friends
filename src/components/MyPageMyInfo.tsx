@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useUserStore from "@store/useUserStore";
-import { put_users } from "@services/apis";
+import { put_users } from "@services/user";
 import InterestSelectionSheet from "@components/InterestSelectionSheet"; // 관심사 선택 시트 가져오기
 
 export default function MyPageMyInfo() {

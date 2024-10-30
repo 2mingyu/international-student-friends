@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Sheet } from "react-modal-sheet";
 import { interests } from "@data/datas";
 import useUserStore from "@store/useUserStore";
+import { put_interests } from "@services/user";
 
 interface InterestSelectionSheetProps {
   isOpen: boolean;
@@ -12,7 +13,7 @@ export default function InterestSelectionSheet({
   isOpen,
   onClose,
 }: InterestSelectionSheetProps) {
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
   // 시트가 열릴 때 user의 관심사에 따라 체크박스를 설정
@@ -29,6 +30,19 @@ export default function InterestSelectionSheet({
         ? prevSelected.filter((item) => item !== interest)
         : [...prevSelected, interest],
     );
+  };
+
+  const handleSave = async () => {
+    try {
+      const response = await put_interests(user.userId, selectedInterests);
+      setUser({
+        ...user,
+        interests: response.interests, // 업데이트된 interests로 교체
+      });
+    } catch (error) {
+      console.error("Failed to update user interests", error);
+    }
+    onClose();
   };
 
   return (
@@ -56,7 +70,7 @@ export default function InterestSelectionSheet({
               ))}
             </div>
             <button
-              onClick={onClose} // TODO: 관심사 변경
+              onClick={handleSave} // TODO: 관심사 변경
               className="mt-auto w-full rounded bg-blue-500 px-4 py-2 text-white"
             >
               Save and Close

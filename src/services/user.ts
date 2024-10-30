@@ -25,3 +25,16 @@ export const put_users = async (
   });
   return response.data;
 };
+
+// 관심사 등록
+export const put_interests = async (id: number, newInterests: string[]) => {
+  const interestsPayload = newInterests.map((interest) => ({
+    interest: interest,
+    score: 0, // TODO X: score는 0으로 고정
+  }));
+
+  const response = await axiosInstance.put(`/api/v1/users/${id}/interests`, {
+    interests: interestsPayload,
+  });
+  return response.data;
+};

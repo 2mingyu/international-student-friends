@@ -1,9 +1,8 @@
 import { useState } from "react";
 import useUserStore from "@store/useUserStore";
-import { get_users, put_users } from "@services/user";
+import { put_users } from "@services/user";
 import InterestSelectionSheet from "@components/InterestSelectionSheet";
 import { countries, languages, majors } from "@data/datas";
-import { User } from "types/users";
 
 export default function MyPageMyInfo() {
   const { setUser, user } = useUserStore();
@@ -32,7 +31,7 @@ export default function MyPageMyInfo() {
 
   const handleSave = async () => {
     try {
-      await put_users(
+      const response = await put_users(
         user.userId,
         editedUser.name,
         editedUser.country,
@@ -40,8 +39,14 @@ export default function MyPageMyInfo() {
         editedUser.preferredLanguage,
         editedUser.major,
       );
-      const userProfile: User = await get_users(user.userId);
-      setUser(userProfile);
+      setUser({
+        ...user,
+        name: response.name,
+        country: response.country,
+        profileImage: response.profileImage,
+        preferredLanguage: response.preferredLanguage,
+        major: response.major,
+      });
       setIsEditing(false);
     } catch (error) {
       console.error("Failed to update user info", error);

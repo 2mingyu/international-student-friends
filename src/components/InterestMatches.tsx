@@ -74,7 +74,7 @@ export default function InterestMatches({
                 <div className="mt-2">
                   <ul className="text-sm text-gray-600">
                     {matchedUser.interests.map((interest) => (
-                      <li key={interest.content}>{interest.content}</li>
+                      <li key={interest.id}>{interest.content}</li>
                     ))}
                   </ul>
                 </div>

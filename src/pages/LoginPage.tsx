@@ -24,6 +24,12 @@ export default function LoginPage() {
       setUserId(response.userId);
       const userProfile: User = await get_users(response.userId);
       setUser(userProfile);
+
+      // sessionStorage에 토큰과 유저 정보 저장
+      sessionStorage.setItem("token", response.token);
+      sessionStorage.setItem("userId", String(response.userId));
+      sessionStorage.setItem("user", JSON.stringify(userProfile));
+
       navigate("/");
     } catch (error) {
       console.error("Login failed", error);

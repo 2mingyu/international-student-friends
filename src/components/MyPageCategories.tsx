@@ -26,6 +26,10 @@ export default function MyPageCategories({
       interests: [],
     });
     setUserId(0);
+
+    // sessionStorage 비우기
+    sessionStorage.clear();
+
     navigate("/login");
   };
 

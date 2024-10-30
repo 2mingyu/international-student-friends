@@ -31,6 +31,24 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
+      const { setToken, setUser, setUserId } = useUserStore.getState();
+
+      // 상태 초기화
+      setToken("");
+      setUser({
+        userId: 0,
+        name: "",
+        profileImage: "",
+        country: "",
+        preferredLanguage: "",
+        major: "",
+        interests: [],
+      });
+      setUserId(0);
+
+      // sessionStorage 비우기
+      sessionStorage.clear();
+
       window.location.href = "/login"; // 401 에러 발생 시 로그인 페이지로 이동
     }
     return Promise.reject(error);

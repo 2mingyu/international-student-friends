@@ -23,6 +23,17 @@ export const routesData = [
   },
   {
     name: {
+      ko: "채팅",
+      en: "Chat",
+      fr: "Discussion",
+      ja: "チャット",
+      de: "Chat",
+      zh: "聊天",
+    },
+    path: "/chat",
+  },
+  {
+    name: {
       ko: "마이페이지",
       en: "My Page",
       fr: "Ma page",

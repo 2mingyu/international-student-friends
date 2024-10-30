@@ -6,7 +6,7 @@ export interface User {
   major: string;
   interests: Interest[];
   feeds?: Feed[];
-  // language: string;
+  preferredLanguage: string;
 }
 
 export interface Interest {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import useUserStore from "@store/useUserStore";
 import { get_users, put_users } from "@services/user";
 import InterestSelectionSheet from "@components/InterestSelectionSheet";
-import { countries, /*languages,*/ majors } from "@data/datas";
+import { countries, languages, majors } from "@data/datas";
 import { User } from "types/users";
 
 export default function MyPageMyInfo() {
@@ -12,7 +12,7 @@ export default function MyPageMyInfo() {
   const [editedUser, setEditedUser] = useState({
     name: "",
     country: "",
-    language: "",
+    preferredLanguage: "",
     major: "",
   });
 
@@ -20,7 +20,7 @@ export default function MyPageMyInfo() {
     setEditedUser({
       name: user.name,
       country: user.country,
-      language: "", // TODO: user.language,
+      preferredLanguage: user.preferredLanguage,
       major: user.major,
     });
     setIsEditing(true);
@@ -37,7 +37,7 @@ export default function MyPageMyInfo() {
         editedUser.name,
         editedUser.country,
         user.profileImage, // TODO X: 프로필 이미지 수정
-        editedUser.language,
+        editedUser.preferredLanguage,
         editedUser.major,
       );
       const userProfile: User = await get_users(user.userId);
@@ -109,14 +109,17 @@ export default function MyPageMyInfo() {
         )}
       </div>
 
-      {/* TODO: Language */}
-      {/* <div className="flex gap-2">
+      {/* Language */}
+      <div className="flex gap-2">
         <h1 className="min-w-20 font-semibold text-gray-500">Language</h1>
         {isEditing ? (
           <select
-            value={editedUser.language}
+            value={editedUser.preferredLanguage}
             onChange={(e) =>
-              setEditedUser({ ...editedUser, language: e.target.value })
+              setEditedUser({
+                ...editedUser,
+                preferredLanguage: e.target.value,
+              })
             }
             className="max-w-32 border-b-2 border-gray-300 px-0.5 py-1 text-sm focus:border-blue-500 focus:outline-none"
           >
@@ -127,9 +130,9 @@ export default function MyPageMyInfo() {
             ))}
           </select>
         ) : (
-          <p className="font-semibold">{user.language}</p>
+          <p className="font-semibold">{user.preferredLanguage}</p>
         )}
-      </div> */}
+      </div>
 
       {/* Major */}
       <div className="flex gap-2">

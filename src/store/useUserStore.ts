@@ -18,6 +18,7 @@ const useUserStore = create<UserState>((set) => ({
     name: "",
     profileImage: "",
     country: "",
+    preferredLanguage: "",
     major: "",
     interests: [],
   },

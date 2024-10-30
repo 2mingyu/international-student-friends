@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Close from "@assets/close.svg";
 import { routesData } from "@data/routes";
-// import useUserStore from "@store/useUserStore";
+import useUserStore from "@store/useUserStore";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -11,7 +11,7 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const navigate = useNavigate();
-  // const { user } = useUserStore();
+  const { user } = useUserStore();
 
   useEffect(() => {
     // 사이드바가 열리면 body 스크롤을 막음
@@ -26,6 +26,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
+
+  type LanguageCode = "ko" | "en" | "fr" | "ja" | "de" | "zh";
+  let language: LanguageCode = "ko";
+  if (user.preferredLanguage === "English") language = "en";
+  else if (user.preferredLanguage === "French") language = "fr";
+  else if (user.preferredLanguage === "Japanese") language = "ja";
+  else if (user.preferredLanguage === "German") language = "de";
+  else if (user.preferredLanguage === "Chinese") language = "zh";
 
   return (
     <>
@@ -51,9 +59,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   onClose();
                 }}
               >
-                {/* TODO: 언어 다국어 */}
-                {/* {route.name[user.language]} */}
-                {route.name.ko} {/* 제거 */}
+                {route.name[language]}
               </li>
             ))}
           </ul>

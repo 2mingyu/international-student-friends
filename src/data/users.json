@@ -1,6 +1,6 @@
 [
   {
-    "userId": 8,
+    "userId": 7,
     "email": "korea@inu.ac.kr",
     "password": "string",
     "name": "박철길",
@@ -11,7 +11,7 @@
     "major": "Information Technology"
   },
   {
-    "userId": 9,
+    "userId": 8,
     "email": "usa@inu.ac.kr",
     "password": "string",
     "name": "John Doe",
@@ -22,7 +22,7 @@
     "major": "Convergence and Liberal Studies"
   },
   {
-    "userId": 10,
+    "userId": 9,
     "email": "japan@inu.ac.kr",
     "password": "string",
     "name": "田中 聡",
@@ -33,7 +33,7 @@
     "major": "Life Science and Technology"
   },
   {
-    "userId": 11,
+    "userId": 10,
     "email": "germany@inu.ac.kr",
     "password": "string",
     "name": "Hans Müller",
@@ -44,7 +44,7 @@
     "major": "Northeast Asia International Commerce and Logistics"
   },
   {
-    "userId": 12,
+    "userId": 11,
     "email": "china@inu.ac.kr",
     "password": "string",
     "name": "李伟",
@@ -55,7 +55,7 @@
     "major": "Social Sciences"
   },
   {
-    "userId": 13,
+    "userId": 12,
     "email": "france@inu.ac.kr",
     "password": "string",
     "name": "Pierre Dubois",

@@ -7,9 +7,9 @@ export const delete_feeds = async (feedId: number) => {
 };
 
 // 피드 조회
-export const get_feeds = async (page: number, size: number, sort: string) => {
+export const get_feeds = async (page: number, size: number) => {
   const response = await axiosInstance.get(
-    `/api/v1/feeds?page=${page}&size=${size}&sort=${sort}`,
+    `/api/v1/feeds?page=${page}&size=${size}`,
   );
   return response.data;
 };
@@ -31,20 +31,6 @@ export const post_feeds = async (
 export const post_feeds_like = async (feedId: number, userId: number) => {
   const response = await axiosInstance.post(
     `/api/v1/feeds/${feedId}/likes?userId=${userId}`,
-  );
-  return response.data;
-};
-
-// 피드 수정
-export const put_feeds = async (
-  feedId: number,
-  content: string,
-  userId: number,
-  image: FormData,
-) => {
-  const response = await axiosInstance.put(
-    `/api/v1/feeds/${feedId}?content=${content}&userId=${userId}`,
-    image,
   );
   return response.data;
 };

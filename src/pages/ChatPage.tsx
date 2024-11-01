@@ -1,6 +1,5 @@
-// pages/ChatPage.tsx
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getChatRooms } from "@services/chat";
 import useUserStore from "@store/useUserStore";
 import ChatRoomComponent from "@components/ChatRoomComponent";
@@ -9,6 +8,7 @@ import { ChatRoomType } from "types/chat";
 export default function ChatPage() {
   const { userId } = useUserStore();
   const location = useLocation();
+  const navigate = useNavigate();
   const [chatRooms, setChatRooms] = useState<ChatRoomType[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<ChatRoomType | null>(null);
 
@@ -39,6 +39,12 @@ export default function ChatPage() {
 
   const handleRoomSelect = (room: ChatRoomType) => {
     setSelectedRoom(room);
+    navigate(`/chat?roomId=${room.id}`);
+  };
+
+  const handleBack = () => {
+    setSelectedRoom(null);
+    navigate("/chat"); // 쿼리에서 roomId를 제거하고 기본 채팅 페이지로 이동
   };
 
   return (
@@ -66,10 +72,7 @@ export default function ChatPage() {
           </ul>
         </div>
       ) : (
-        <ChatRoomComponent
-          room={selectedRoom}
-          onBack={() => setSelectedRoom(null)}
-        />
+        <ChatRoomComponent room={selectedRoom} onBack={handleBack} />
       )}
     </div>
   );

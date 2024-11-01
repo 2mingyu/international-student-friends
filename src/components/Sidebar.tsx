@@ -55,7 +55,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 key={route.path}
                 className="cursor-pointer border-b py-2"
                 onClick={() => {
-                  navigate(route.path);
+                  if (route.path !== "/feed") {
+                    navigate(route.path);
+                  }
                   onClose();
                 }}
               >

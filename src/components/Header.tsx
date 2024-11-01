@@ -18,15 +18,15 @@ export default function Header({ openSidebar }: HeaderProps) {
   );
 
   let headerTitle = currentRoute?.name.ko || "";
-  if (user.preferredLanguage === "English")
+  if (user.preferredLanguage === "en")
     headerTitle = currentRoute?.name.en || "";
-  else if (user.preferredLanguage === "French")
+  else if (user.preferredLanguage === "fr")
     headerTitle = currentRoute?.name.fr || "";
-  else if (user.preferredLanguage === "Japanese")
+  else if (user.preferredLanguage === "ja")
     headerTitle = currentRoute?.name.ja || "";
-  else if (user.preferredLanguage === "German")
+  else if (user.preferredLanguage === "de")
     headerTitle = currentRoute?.name.de || "";
-  else if (user.preferredLanguage === "Chinese")
+  else if (user.preferredLanguage === "zh")
     headerTitle = currentRoute?.name.zh || "";
 
   return (

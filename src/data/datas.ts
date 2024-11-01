@@ -12,16 +12,16 @@ export const countries = [
 ];
 
 export const languages = [
-  { ko: "한국어", en: "Korean" },
-  { ko: "영어", en: "English" },
-  { ko: "프랑스어", en: "French" },
-  { ko: "일본어", en: "Japanese" },
-  { ko: "독일어", en: "German" },
-  { ko: "중국어", en: "Chinese" },
-  { ko: "스페인어", en: "Spanish" },
-  { ko: "힌디어", en: "Hindi" },
-  { ko: "러시아어", en: "Russian" },
-  { ko: "포르투갈어", en: "Portuguese" },
+  { code: "ko", ko: "한국어", en: "Korean" },
+  { code: "en", ko: "영어", en: "English" },
+  { code: "fr", ko: "프랑스어", en: "French" },
+  { code: "ja", ko: "일본어", en: "Japanese" },
+  { code: "de", ko: "독일어", en: "German" },
+  { code: "zh", ko: "중국어", en: "Chinese" },
+  // { ko: "스페인어", en: "Spanish" },
+  // { ko: "힌디어", en: "Hindi" },
+  // { ko: "러시아어", en: "Russian" },
+  // { ko: "포르투갈어", en: "Portuguese" },
 ];
 
 export const majors = [

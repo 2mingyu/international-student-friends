@@ -29,11 +29,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   type LanguageCode = "ko" | "en" | "fr" | "ja" | "de" | "zh";
   let language: LanguageCode = "ko";
-  if (user.preferredLanguage === "English") language = "en";
-  else if (user.preferredLanguage === "French") language = "fr";
-  else if (user.preferredLanguage === "Japanese") language = "ja";
-  else if (user.preferredLanguage === "German") language = "de";
-  else if (user.preferredLanguage === "Chinese") language = "zh";
+  if (user.preferredLanguage === "en") language = "en";
+  else if (user.preferredLanguage === "fr") language = "fr";
+  else if (user.preferredLanguage === "ja") language = "ja";
+  else if (user.preferredLanguage === "de") language = "de";
+  else if (user.preferredLanguage === "zh") language = "zh";
 
   return (
     <>

@@ -119,13 +119,22 @@ export default function MyPageMyInfo() {
         <h1 className="min-w-20 font-semibold text-gray-500">Language</h1>
         {isEditing ? (
           <select
-            value={editedUser.preferredLanguage}
-            onChange={(e) =>
+            value={
+              languages.find(
+                (lang) => lang.code === editedUser.preferredLanguage,
+              )?.en || ""
+            }
+            onChange={(e) => {
+              const selectedLanguage = languages.find(
+                (lang) => lang.en === e.target.value,
+              );
               setEditedUser({
                 ...editedUser,
-                preferredLanguage: e.target.value,
-              })
-            }
+                preferredLanguage: selectedLanguage
+                  ? selectedLanguage.code
+                  : "",
+              });
+            }}
             className="max-w-32 border-b-2 border-gray-300 px-0.5 py-1 text-sm focus:border-blue-500 focus:outline-none"
           >
             {languages.map((language, index) => (
@@ -135,7 +144,9 @@ export default function MyPageMyInfo() {
             ))}
           </select>
         ) : (
-          <p className="font-semibold">{user.preferredLanguage}</p>
+          <p className="font-semibold">
+            {languages.find((lang) => lang.code === user.preferredLanguage)?.en}
+          </p>
         )}
       </div>
 
@@ -164,7 +175,6 @@ export default function MyPageMyInfo() {
       {/* Interests */}
       <div className="flex gap-2">
         <h1 className="min-w-20 font-semibold text-gray-500">Interests</h1>
-
         <div>
           {isEditing && (
             <p className="cursor-pointer underline" onClick={openSheet}>

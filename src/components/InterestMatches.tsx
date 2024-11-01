@@ -34,15 +34,14 @@ export default function InterestMatches({
   }, [interest]);
 
   let interestTitle = interests[interest]?.ko || interest;
-  if (language === "English")
-    interestTitle = interests[interest]?.en || interest;
-  else if (language === "French")
+  if (language === "en") interestTitle = interests[interest]?.en || interest;
+  else if (language === "fr")
     interestTitle = interests[interest]?.fr || interest;
-  else if (language === "Japanese")
+  else if (language === "ja")
     interestTitle = interests[interest]?.ja || interest;
-  else if (language === "German")
+  else if (language === "de")
     interestTitle = interests[interest]?.de || interest;
-  else if (language === "Chinese")
+  else if (language === "zh")
     interestTitle = interests[interest]?.zh || interest;
 
   return (

@@ -1,5 +1,6 @@
 // pages/ChatPage.tsx
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { getChatRooms } from "@services/chat";
 import useUserStore from "@store/useUserStore";
 import ChatRoomComponent from "@components/ChatRoomComponent";
@@ -7,6 +8,7 @@ import { ChatRoomType } from "types/chat";
 
 export default function ChatPage() {
   const { userId } = useUserStore();
+  const location = useLocation();
   const [chatRooms, setChatRooms] = useState<ChatRoomType[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<ChatRoomType | null>(null);
 
@@ -15,13 +17,25 @@ export default function ChatPage() {
       try {
         const rooms = await getChatRooms(userId);
         setChatRooms(rooms);
+
+        // 쿼리에서 roomId 가져오기
+        const queryParams = new URLSearchParams(location.search);
+        const roomId = queryParams.get("roomId");
+
+        if (roomId) {
+          // 쿼리로 받은 roomId에 해당하는 채팅방 선택
+          const initialRoom = rooms.find((room) => room.id === Number(roomId));
+          if (initialRoom) {
+            setSelectedRoom(initialRoom);
+          }
+        }
       } catch (error) {
         console.error("Failed to fetch chat rooms:", error);
       }
     };
 
     fetchChatRooms();
-  }, [userId]);
+  }, [userId, location.search]);
 
   const handleRoomSelect = (room: ChatRoomType) => {
     setSelectedRoom(room);

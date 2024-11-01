@@ -1,9 +1,9 @@
 // components/InterestMatches.tsx
 import { useEffect, useState } from "react";
 import { get_matches } from "@services/matching";
+import { getChatRooms, createChatRoom } from "@services/chat";
 import { User } from "types/users";
 import { interests } from "@data/datas";
-import { createChatRoom } from "@services/chat";
 import { useNavigate } from "react-router-dom";
 import { ChatRoomType } from "types/chat";
 
@@ -49,13 +49,27 @@ export default function InterestMatches({
   else if (language === "zh")
     interestTitle = interests[interest]?.zh || interest;
 
-  // 유저 클릭 시 채팅방 생성 및 이동
+  // 유저 클릭 시 채팅방 생성 또는 기존 채팅방 입장
   const handleUserClick = async (matchedUserId: number) => {
     try {
-      const newRoom: ChatRoomType = await createChatRoom(matchedUserId);
-      navigate(`/chat`, { state: { roomId: newRoom.id } });
+      // 기존 채팅방 가져오기
+      const existingRooms = await getChatRooms(matchedUserId);
+      const existingRoom = existingRooms.find((room) =>
+        room.participants.some(
+          (participant) => participant.userId === matchedUserId,
+        ),
+      );
+
+      if (existingRoom) {
+        // 기존 채팅방이 있으면 해당 채팅방으로 이동
+        navigate(`/chat?roomId=${existingRoom.id}`);
+      } else {
+        // 기존 채팅방이 없으면 새로 생성하고 이동
+        const newRoom: ChatRoomType = await createChatRoom(matchedUserId);
+        navigate(`/chat?roomId=${newRoom.id}`);
+      }
     } catch (error) {
-      console.error("Failed to create chat room:", error);
+      console.error("Failed to create or fetch chat room:", error);
     }
   };
 

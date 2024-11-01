@@ -23,11 +23,11 @@ export const getChatMessages = async (
 };
 
 // 채팅방 생성하기
-export const createChatRoom = async (participantId: number) => {
+export const createChatRoom = async (participantIds: number[]) => {
   const response = await axiosInstance.post<ChatRoomType>(
     `/api/v1/chat-rooms/groups`,
     {
-      participantIds: [participantId],
+      participantIds: participantIds,
     },
   );
   return response.data;

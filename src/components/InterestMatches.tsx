@@ -72,7 +72,7 @@ export default function InterestMatches({
         navigate(`/chat?roomId=${existingRoom.id}`);
       } else {
         // 기존 채팅방이 없으면 새로 생성하고 이동
-        const newRoom: ChatRoomType = await createChatRoom(matchedUserId);
+        const newRoom: ChatRoomType = await createChatRoom([matchedUserId]);
         navigate(`/chat?roomId=${newRoom.id}`);
       }
     } catch (error) {

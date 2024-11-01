@@ -98,16 +98,16 @@ export default function ChatPage() {
     <div className="p-4">
       {!selectedRoom ? (
         <div>
-          <h2 className="mb-4 text-xl font-bold">채팅방 목록</h2>
+          <h2 className="mb-4 text-xl font-bold">ChatRooms</h2>
           <button
             onClick={toggleGroupChatCreation}
             className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
           >
-            {isGroupChatCreation ? "취소" : "단체 채팅방 만들기"}
+            {isGroupChatCreation ? "Cancel" : "Create a group chat room"}
           </button>
           {isGroupChatCreation && (
             <div>
-              <h3 className="mb-2 text-lg font-semibold">유저 선택</h3>
+              <h3 className="mb-2 text-lg font-semibold">Select Users</h3>
               <ul>
                 {matchedUsers.map((user) => (
                   <li key={user.userId} className="mb-2 flex items-center">
@@ -125,24 +125,24 @@ export default function ChatPage() {
                 onClick={handleCreateGroupChat}
                 className="mt-4 rounded bg-green-500 px-4 py-2 text-white"
               >
-                선택된 유저로 단체 채팅방 생성
+                Create
               </button>
             </div>
           )}
           <ul>
             {chatRooms.map((room) => {
-              const otherParticipant = room.participants.find(
-                (participant) => participant.userId !== userId,
-              );
+              const participantNames = room.participants
+                .filter((participant) => participant.userId !== userId)
+                .map((participant) => participant.name)
+                .join(", ");
+
               return (
                 <li
                   key={room.id}
                   className="mb-2 cursor-pointer rounded border p-2 hover:bg-gray-100"
                   onClick={() => handleRoomSelect(room)}
                 >
-                  {otherParticipant
-                    ? `${otherParticipant.name}님과의 채팅방`
-                    : `채팅방 ${room.id}`}
+                  {participantNames || `채팅방 ${room.id}`}
                 </li>
               );
             })}

@@ -1,4 +1,3 @@
-// components/ChatRoomComponent.tsx
 import { useEffect, useState, useRef } from "react";
 import { ChatRoomType, ChatMessage } from "types/chat";
 import { getChatMessages } from "@services/chat";
@@ -109,9 +108,7 @@ export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
       <div className="mb-4 h-80 overflow-y-auto border p-2">
         {messages.map((message) => {
           const isOwnMessage = message.senderId === userId;
-          const translation = message.translations?.find(
-            (t) => t.language !== "ko",
-          );
+          const translation = message.translations?.find((t) => t.language);
           const isFiltered = filteredMessages.has(
             translation ? translation.content : message.content,
           );

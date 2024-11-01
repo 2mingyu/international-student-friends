@@ -6,6 +6,7 @@ import { User } from "types/users";
 import { interests } from "@data/datas";
 import { useNavigate } from "react-router-dom";
 import { ChatRoomType } from "types/chat";
+import useUserStore from "@store/useUserStore";
 
 interface InterestMatchesProps {
   interest: string;
@@ -20,6 +21,7 @@ export default function InterestMatches({
 }: InterestMatchesProps) {
   const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const { userId } = useUserStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,15 +55,20 @@ export default function InterestMatches({
   const handleUserClick = async (matchedUserId: number) => {
     try {
       // 기존 채팅방 가져오기
-      const existingRooms = await getChatRooms(matchedUserId);
-      const existingRoom = existingRooms.find((room) =>
-        room.participants.some(
-          (participant) => participant.userId === matchedUserId,
-        ),
+      const existingRooms = await getChatRooms(userId);
+      const existingRoom = existingRooms.find(
+        (room) =>
+          room.participants.length === 2 && // 참여자가 정확히 2명인지 확인
+          room.participants.some(
+            (participant) => participant.userId === userId,
+          ) &&
+          room.participants.some(
+            (participant) => participant.userId === matchedUserId,
+          ),
       );
 
       if (existingRoom) {
-        // 기존 채팅방이 있으면 해당 채팅방으로 이동
+        // 기존 1:1 채팅방이 있으면 해당 채팅방으로 이동
         navigate(`/chat?roomId=${existingRoom.id}`);
       } else {
         // 기존 채팅방이 없으면 새로 생성하고 이동

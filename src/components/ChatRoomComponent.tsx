@@ -13,7 +13,8 @@ interface ChatRoomProps {
 }
 
 export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
-  const { userId, token } = useUserStore();
+  const { userId, token, user } = useUserStore();
+  const userLanguage = user.preferredLanguage;
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const stompClientRef = useRef<any>(null);
@@ -108,7 +109,9 @@ export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
       <div className="mb-4 h-80 overflow-y-auto border p-2">
         {messages.map((message) => {
           const isOwnMessage = message.senderId === userId;
-          const translation = message.translations?.find((t) => t.language);
+          const translation =
+            message.translations?.find((t) => t.language === userLanguage) ||
+            message.translations?.find((t) => t.language);
           const isFiltered = filteredMessages.has(
             translation ? translation.content : message.content,
           );

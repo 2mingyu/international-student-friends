@@ -102,11 +102,14 @@ export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
   }, [messages]);
 
   return (
-    <div>
-      <button onClick={onBack} className="mb-4 text-blue-500">
+    <div className="flex w-full flex-grow flex-col bg-white p-4 shadow-lg">
+      <button
+        onClick={onBack}
+        className="mb-4 w-14 text-blue-500 hover:underline"
+      >
         &larr; Back
       </button>
-      <div className="mb-4 h-80 overflow-y-auto border p-2">
+      <div className="flex-grow overflow-y-auto py-4">
         {messages.map((message) => {
           const isOwnMessage = message.senderId === userId;
           const translation =
@@ -119,22 +122,21 @@ export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
           return (
             <div
               key={message.id}
-              className={`mb-2 p-2 ${
-                isOwnMessage ? "text-right" : "text-left"
+              className={`mb-3 flex ${
+                isOwnMessage ? "justify-end" : "justify-start"
               }`}
             >
               <div
-                className={`inline-block rounded p-2 ${
+                className={`max-w-xs rounded-lg p-3 text-sm ${
                   isFiltered
                     ? "bg-red-200 text-red-700"
                     : isOwnMessage
-                      ? "bg-blue-100"
-                      : "bg-gray-100"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-gray-800"
                 }`}
               >
-                {/* 보낸 사람이 본인이 아닌 경우, 보낸 사람의 이름을 표시 */}
                 {!isOwnMessage && (
-                  <p className="text-xs font-semibold text-gray-700">
+                  <p className="mb-1 text-xs font-semibold text-gray-600">
                     {message.senderName}
                   </p>
                 )}
@@ -143,8 +145,8 @@ export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
                 ) : translation ? (
                   <>
                     <p>{translation.content}</p>
-                    <p className="mt-1 text-xs text-gray-600">
-                      (원문: {message.content})
+                    <p className="mt-1 text-xs text-gray-500">
+                      (Original: {message.content})
                     </p>
                   </>
                 ) : (
@@ -156,9 +158,10 @@ export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
         })}
         <div ref={messagesEndRef} />
       </div>
-      <div className="flex">
+      <div className="flex items-center space-x-2">
         <input
-          className="flex-grow rounded border p-2"
+          className="flex-grow rounded-md border border-gray-300 bg-gray-100 p-3 text-sm focus:border-gray-500 focus:bg-white focus:outline-none"
+          placeholder="Type a message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={(e) => {
@@ -166,8 +169,8 @@ export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
           }}
         />
         <button
-          className="ml-2 rounded bg-blue-500 px-4 py-2 text-white"
           onClick={sendMessage}
+          className="rounded-md bg-blue-500 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-600"
         >
           Send
         </button>

@@ -82,7 +82,7 @@ export default function InterestMatches({
 
   return (
     <div className="mb-4">
-      <h2 className="mb-4 text-xl font-bold">{interestTitle}</h2>
+      <h2 className="mb-2 text-xl font-bold">{interestTitle}</h2>
       {error ? (
         <p>{error}</p>
       ) : matchedUsers.length > 0 ? (

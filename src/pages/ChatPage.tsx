@@ -43,10 +43,10 @@ export default function ChatPage() {
         for (const interest of user.interests) {
           const data = await get_matches(interest.content, 0, 10);
           data.content.forEach((user) => {
-            uniqueUsers[user.userId] = user; // 중복된 유저는 덮어쓰도록
+            uniqueUsers[user.userId] = user;
           });
         }
-        setMatchedUsers(Object.values(uniqueUsers)); // 중복 제거된 유저만 배열로 변환하여 설정
+        setMatchedUsers(Object.values(uniqueUsers));
       } catch (error) {
         console.error("Failed to fetch matched users:", error);
       }
@@ -81,7 +81,7 @@ export default function ChatPage() {
 
   const handleCreateGroupChat = async () => {
     if (selectedUsers.length === 0) {
-      alert("유저를 선택해주세요.");
+      alert("Please select at least one user.");
       return;
     }
     try {
@@ -95,58 +95,65 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="p-4">
+    <div className="flex flex-grow flex-col items-center justify-center bg-gray-100">
       {!selectedRoom ? (
-        <div>
-          <h2 className="mb-4 text-xl font-bold">ChatRooms</h2>
-          <button
-            onClick={toggleGroupChatCreation}
-            className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
-          >
-            {isGroupChatCreation ? "Cancel" : "Create a group chat room"}
-          </button>
-          {isGroupChatCreation && (
-            <div>
-              <h3 className="mb-2 text-lg font-semibold">Select Users</h3>
-              <ul>
-                {matchedUsers.map((user) => (
-                  <li key={user.userId} className="mb-2 flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={selectedUsers.includes(user.userId)}
-                      onChange={() => handleUserSelection(user.userId)}
-                      className="mr-2"
-                    />
-                    <span>{user.name}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={handleCreateGroupChat}
-                className="mt-4 rounded bg-green-500 px-4 py-2 text-white"
-              >
-                Create
-              </button>
-            </div>
-          )}
-          <ul>
-            {chatRooms.map((room) => {
-              const participantNames = room.participants
-                .filter((participant) => participant.userId !== userId)
-                .map((participant) => participant.name)
-                .join(", ");
-
-              return (
-                <li
-                  key={room.id}
-                  className="mb-2 cursor-pointer rounded border p-2 hover:bg-gray-100"
-                  onClick={() => handleRoomSelect(room)}
+        <div className="w-4/5 max-w-lg space-y-6 rounded-lg bg-white p-8 shadow-lg">
+          <div>
+            <h2 className="mb-6 text-center text-3xl font-bold text-gray-800">
+              Chat Rooms
+            </h2>
+            <button
+              onClick={toggleGroupChatCreation}
+              className="mb-4 w-full rounded-md bg-blue-500 py-3 text-sm font-bold text-white transition hover:bg-blue-600"
+            >
+              {isGroupChatCreation ? "Cancel Group Chat" : "Create Group Chat"}
+            </button>
+            {isGroupChatCreation ? (
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-700">
+                  Select Users
+                </h3>
+                <ul className="space-y-2">
+                  {matchedUsers.map((user) => (
+                    <li key={user.userId} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={selectedUsers.includes(user.userId)}
+                        onChange={() => handleUserSelection(user.userId)}
+                        className="mr-2"
+                      />
+                      <span className="text-gray-700">{user.name}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={handleCreateGroupChat}
+                  className="w-full rounded-md bg-green-500 py-3 text-sm font-bold text-white transition hover:bg-green-600"
                 >
-                  {participantNames || `채팅방 ${room.id}`}
-                </li>
-              );
-            })}
-          </ul>
+                  Create Group Chat
+                </button>
+              </div>
+            ) : (
+              <ul className="space-y-2">
+                {chatRooms.map((room) => {
+                  const participantNames = room.participants
+                    .filter((participant) => participant.userId !== userId)
+                    .map((participant) => participant.name)
+                    .join(", ");
+
+                  return (
+                    <li
+                      key={room.id}
+                      className="cursor-pointer rounded border p-3 text-gray-700 hover:bg-gray-100"
+                      onClick={() => handleRoomSelect(room)}
+                    >
+                      {participantNames || `Chat Room ${room.id}`}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
         </div>
       ) : (
         <ChatRoomComponent room={selectedRoom} onBack={handleBack} />

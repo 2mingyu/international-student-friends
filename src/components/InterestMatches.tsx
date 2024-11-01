@@ -1,7 +1,11 @@
+// components/InterestMatches.tsx
 import { useEffect, useState } from "react";
 import { get_matches } from "@services/matching";
 import { User } from "types/users";
 import { interests } from "@data/datas";
+import { createChatRoom } from "@services/chat";
+import { useNavigate } from "react-router-dom";
+import { ChatRoomType } from "types/chat";
 
 interface InterestMatchesProps {
   interest: string;
@@ -16,6 +20,7 @@ export default function InterestMatches({
 }: InterestMatchesProps) {
   const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMatches = async () => {
@@ -44,6 +49,16 @@ export default function InterestMatches({
   else if (language === "zh")
     interestTitle = interests[interest]?.zh || interest;
 
+  // 유저 클릭 시 채팅방 생성 및 이동
+  const handleUserClick = async (matchedUserId: number) => {
+    try {
+      const newRoom: ChatRoomType = await createChatRoom(matchedUserId);
+      navigate(`/chat`, { state: { roomId: newRoom.id } });
+    } catch (error) {
+      console.error("Failed to create chat room:", error);
+    }
+  };
+
   return (
     <div className="mb-4">
       <h2 className="mb-4 text-xl font-bold">{interestTitle}</h2>
@@ -54,7 +69,8 @@ export default function InterestMatches({
           {matchedUsers.map((matchedUser) => (
             <div
               key={matchedUser.userId}
-              className="mb-2 min-w-max snap-start rounded-lg border-2 border-slate-100 p-4"
+              className="mb-2 min-w-max cursor-pointer snap-start rounded-lg border-2 border-slate-100 p-4"
+              onClick={() => handleUserClick(matchedUser.userId)}
             >
               <div className="flex gap-4">
                 <img

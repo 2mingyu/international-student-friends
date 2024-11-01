@@ -8,6 +8,7 @@ export interface ChatRoomType {
 export interface ChatMessage {
   id: number;
   senderId: number;
+  senderName: string;
   content: string;
   type: string;
   translations?: Translation[];

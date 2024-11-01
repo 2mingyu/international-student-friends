@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getChatRooms } from "@services/chat";
+import { getChatRooms, createChatRoom } from "@services/chat";
+import { get_matches } from "@services/matching";
 import useUserStore from "@store/useUserStore";
 import ChatRoomComponent from "@components/ChatRoomComponent";
 import { ChatRoomType } from "types/chat";
+import { User } from "types/users";
 
 export default function ChatPage() {
-  const { userId } = useUserStore();
+  const { userId, user } = useUserStore();
   const location = useLocation();
   const navigate = useNavigate();
   const [chatRooms, setChatRooms] = useState<ChatRoomType[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<ChatRoomType | null>(null);
+  const [isGroupChatCreation, setIsGroupChatCreation] = useState(false);
+  const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchChatRooms = async () => {
@@ -18,12 +23,10 @@ export default function ChatPage() {
         const rooms = await getChatRooms(userId);
         setChatRooms(rooms);
 
-        // 쿼리에서 roomId 가져오기
         const queryParams = new URLSearchParams(location.search);
         const roomId = queryParams.get("roomId");
 
         if (roomId) {
-          // 쿼리로 받은 roomId에 해당하는 채팅방 선택
           const initialRoom = rooms.find((room) => room.id === Number(roomId));
           if (initialRoom) {
             setSelectedRoom(initialRoom);
@@ -34,8 +37,24 @@ export default function ChatPage() {
       }
     };
 
+    const fetchMatchedUsers = async () => {
+      const uniqueUsers: { [key: number]: User } = {};
+      try {
+        for (const interest of user.interests) {
+          const data = await get_matches(interest.content, 0, 10);
+          data.content.forEach((user) => {
+            uniqueUsers[user.userId] = user; // 중복된 유저는 덮어쓰도록
+          });
+        }
+        setMatchedUsers(Object.values(uniqueUsers)); // 중복 제거된 유저만 배열로 변환하여 설정
+      } catch (error) {
+        console.error("Failed to fetch matched users:", error);
+      }
+    };
+
     fetchChatRooms();
-  }, [userId, location.search]);
+    fetchMatchedUsers();
+  }, [userId, location.search, user.interests]);
 
   const handleRoomSelect = (room: ChatRoomType) => {
     setSelectedRoom(room);
@@ -44,7 +63,35 @@ export default function ChatPage() {
 
   const handleBack = () => {
     setSelectedRoom(null);
-    navigate("/chat"); // 쿼리에서 roomId를 제거하고 기본 채팅 페이지로 이동
+    navigate("/chat");
+  };
+
+  const toggleGroupChatCreation = () => {
+    setIsGroupChatCreation(!isGroupChatCreation);
+    setSelectedUsers([]);
+  };
+
+  const handleUserSelection = (userId: number) => {
+    setSelectedUsers((prevSelected) =>
+      prevSelected.includes(userId)
+        ? prevSelected.filter((id) => id !== userId)
+        : [...prevSelected, userId],
+    );
+  };
+
+  const handleCreateGroupChat = async () => {
+    if (selectedUsers.length === 0) {
+      alert("유저를 선택해주세요.");
+      return;
+    }
+    try {
+      const newRoom = await createChatRoom(selectedUsers);
+      navigate(`/chat?roomId=${newRoom.id}`);
+      setIsGroupChatCreation(false);
+      setSelectedUsers([]);
+    } catch (error) {
+      console.error("Failed to create group chat room:", error);
+    }
   };
 
   return (
@@ -52,6 +99,36 @@ export default function ChatPage() {
       {!selectedRoom ? (
         <div>
           <h2 className="mb-4 text-xl font-bold">채팅방 목록</h2>
+          <button
+            onClick={toggleGroupChatCreation}
+            className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
+          >
+            {isGroupChatCreation ? "취소" : "단체 채팅방 만들기"}
+          </button>
+          {isGroupChatCreation && (
+            <div>
+              <h3 className="mb-2 text-lg font-semibold">유저 선택</h3>
+              <ul>
+                {matchedUsers.map((user) => (
+                  <li key={user.userId} className="mb-2 flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedUsers.includes(user.userId)}
+                      onChange={() => handleUserSelection(user.userId)}
+                      className="mr-2"
+                    />
+                    <span>{user.name}</span>
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={handleCreateGroupChat}
+                className="mt-4 rounded bg-green-500 px-4 py-2 text-white"
+              >
+                선택된 유저로 단체 채팅방 생성
+              </button>
+            </div>
+          )}
           <ul>
             {chatRooms.map((room) => {
               const otherParticipant = room.participants.find(

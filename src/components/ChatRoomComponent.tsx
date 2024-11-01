@@ -62,7 +62,7 @@ export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
             const isDuplicate = prevMessages.some(
               (msg) => msg.id === received.payload.id,
             );
-            if (isDuplicate) return prevMessages; // 중복 메시지 무시
+            if (isDuplicate) return prevMessages;
             return [...prevMessages, received.payload];
           });
 
@@ -104,7 +104,7 @@ export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
   return (
     <div>
       <button onClick={onBack} className="mb-4 text-blue-500">
-        &larr; 뒤로가기
+        &larr; Back
       </button>
       <div className="mb-4 h-80 overflow-y-auto border p-2">
         {messages.map((message) => {
@@ -132,6 +132,12 @@ export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
                       : "bg-gray-100"
                 }`}
               >
+                {/* 보낸 사람이 본인이 아닌 경우, 보낸 사람의 이름을 표시 */}
+                {!isOwnMessage && (
+                  <p className="text-xs font-semibold text-gray-700">
+                    {message.senderName}
+                  </p>
+                )}
                 {isOwnMessage ? (
                   <p>{message.content}</p>
                 ) : translation ? (
@@ -163,7 +169,7 @@ export default function ChatRoomComponent({ room, onBack }: ChatRoomProps) {
           className="ml-2 rounded bg-blue-500 px-4 py-2 text-white"
           onClick={sendMessage}
         >
-          전송
+          Send
         </button>
       </div>
     </div>
